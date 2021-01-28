@@ -1,0 +1,15 @@
+---
+
+applications:
+- name: log-drain-proxy
+  memory: 64M
+  disk_quota: 256M
+  instances: 1
+  path: nginx
+  buildpacks:
+  - nginx_buildpack
+  routes:
+  - route: ((route))
+  env:
+    PROXIED_ROUTE: ((proxied_route))
+    PROXIED_PORT: ((proxied_port))

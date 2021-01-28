@@ -14,4 +14,4 @@ COPY entrypoint.sh /bin/
 
 USER fluent
 
-EXPOSE 5140/tcp
+EXPOSE 8080/tcp
