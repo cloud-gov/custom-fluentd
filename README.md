@@ -1,6 +1,6 @@
 # Custom fluentd application & set up
 
-This repo and instructions will guide you through the set up of a instance of fluentd for capturing logs from clpud.gov apps and saving them to S3. You will need to build and deploy a cusomized version of the fluentd Docker image. Instructions on how to do this are in the `/docker` directory.
+This repo and instructions will guide you through the set up of a instance of [fluentd](https://www.fluentd.org/) for capturing logs from clpud.gov apps and [saving them to S3](https://docs.fluentd.org/how-to-guides/apache-to-s3). You will need to build and deploy a cusomized version of the fluentd Docker image. Instructions on how to do this are in the [`/docker`](docker) directory.
 
 Note - this repo is still a work in progress.
 
@@ -11,7 +11,7 @@ Note - this repo is still a work in progress.
 ```
 ## Deploy the fluentd log drain app
 
-In the `/fluentd` directory, copy `vars.yml.example` to `vars.yml` and fill in the service name, and an internal route for the app. The fluentd log drain app must run on an `*.apps.internal` domain. Push the fluentd app without starting it to bind app to S3 service and generate credentials. (Note - you may need to explicitly bind the app to S3 service to generate credentials for vars.yml file).
+In the [`/fluentd`](fluentd) directory, copy `vars.yml.example` to `vars.yml` and fill in the service name, and an internal route for the app. The fluentd log drain app must run on an `*.apps.internal` domain. Push the fluentd app without starting it to bind app to S3 service and generate credentials. (Note - you may need to explicitly bind the app to S3 service to generate credentials for vars.yml file).
 
 ```bash
 ~$ cf push --no-start --vars-file vars.yml
@@ -26,7 +26,7 @@ Set the remaining environmental variables for fluentd app in `vars.yml` file. Re
 ```
 ## Deploy the log drain proxy
 
-In the `/proxy` directory, copy `vars.yml.example` to `vars.yml` and fill in values for the environmental variables and route for the proxy app. The proxy should have a public route on the `*.app.cloud.gov` domain. The `proxied_route` value is the internal route for the fluentd app you set up in the prior set. The `proxied_port` is always 8080.
+In the [`/proxy`](proxy) directory, copy `vars.yml.example` to `vars.yml` and fill in values for the environmental variables and route for the proxy app. The proxy should have a public route on the `*.app.cloud.gov` domain. The `proxied_route` value is the internal route for the fluentd app you set up in the prior set. The `proxied_port` is always 8080.
 
 Push the proxy app.
 
@@ -57,4 +57,8 @@ The new log drain service needs to be bound to the app you want to capture logs 
 ```bash
 ~$ cf bind-service {your-app-name} log-drain
 ~$ cf restage {your-app-name} # to ensure any needed env variables are picked up by the app
+```
 
+## Caveats
+
+* The current fluentd config stores files locally in a cloud.gov app instance and saves them to S3 every hour (via the `flush_interval` setting in the fluentd.conf file). Because disk space is ephemeral in cloud.gov, it is possible that logs could be lost when an app instance restarts. Use of the `flush_at_shutdown` config option mitigates this risk, but probably doesn't eliminate in completely.
