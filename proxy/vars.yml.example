@@ -1,0 +1,3 @@
+route: 
+proxied_route:
+proxied_port: 8080
