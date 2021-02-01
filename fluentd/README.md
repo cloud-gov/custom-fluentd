@@ -1,6 +1,6 @@
 # Custom fluentd
 
-A customized Docker image based on [Fluentd's image](https://hub.docker.com/r/fluent/fluentd/).
+An app for deploying a custom fluentd image to cloud.gov
 
 ## Usage
 
@@ -10,3 +10,4 @@ Set the following environmental variables when using this image:
 * secret_access_key
 * bucket
 * region
+* endpoint
