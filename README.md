@@ -28,7 +28,8 @@ Set the remaining environmental variables for fluentd app in `vars.yml` file. Re
 
 In the [`/proxy`](proxy) directory, copy `vars.yml.example` to `vars.yml` and fill in values for the environmental variables and route for the proxy app. The proxy should have a public route on the `*.app.cloud.gov` domain. The `proxied_route` value is the internal route for the fluentd app you set up in the prior set. The `proxied_port` is always 8080.
 
-Push the proxy app.
+The proxy app uses HTTP basic authentication to restrict access to the backend fluentd log drain. To ensure this works properly, copy the `.htpasswd.example` file to `.htpasswd` and fill in the placeholders with a user name and hashed password. You'll need to hash the password generator or tool like [htpasswd](https://httpd.apache.org/docs/2.4/programs/htpasswd.html). Once you have updated the `.htpasswd` file, you ar eready to push the app.
+
 
 ```bash
 ~$ cf push --vars-file vars.yml
@@ -44,10 +45,10 @@ Add a new network policy to allow proxy app to talk to the fluentd app. A networ
 
 ## Set up log drain
 
-Set up log drain service using the route for the log-drain-proxy app. Make sure to use the `https://` scheme and the port number (443) in the URL for the log drain:
+Set up log drain service using the route for the log-drain-proxy app. Make sure to use the `https://` scheme and the port number (443) in the URL for the log drain. You'll also need to add the user name and password you created when you deployed the proxy application, and include that in the URL for the log drain target:
 
 ```bash
-~$ cf cups log-drain -l https://log-drain-proxy.app.cloud.gov:443/
+~$ cf cups log-drain -l https://user:password@log-drain-proxy.app.cloud.gov:443/
 ```
 
 ## Bind log drain service

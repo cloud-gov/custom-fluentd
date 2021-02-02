@@ -1,2 +1,3 @@
 fluentd/vars.yml
 proxy/vars.yml
+proxy/nginx/.htpasswd
