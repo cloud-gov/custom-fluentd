@@ -1,6 +1,6 @@
 # Custom fluentd application & set up
 
-This repo and instructions will guide you through the set up of a instance of [fluentd](https://www.fluentd.org/) for capturing logs from clpud.gov apps and [saving them to S3](https://docs.fluentd.org/how-to-guides/apache-to-s3). You will need to build and deploy a cusomized version of the fluentd Docker image. Instructions on how to do this are in the [`/docker`](docker) directory.
+This repo and instructions will guide you through the set up of a instance of [fluentd](https://www.fluentd.org/) for capturing logs from cloud.gov apps and [saving them to S3](https://docs.fluentd.org/how-to-guides/apache-to-s3). You will need to build and deploy a cusomized version of the fluentd Docker image. Instructions on how to do this are in the [`/docker`](docker) directory.
 
 Note - this repo is still a work in progress.
 
